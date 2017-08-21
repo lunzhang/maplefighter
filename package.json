@@ -6,12 +6,16 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server --inline --progress --port 8080",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npm run eslint src"
   },
   "author": "lunzhang",
   "license": "MIT",
   "devDependencies": {
     "css-loader": "^0.26.2",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-import": "^2.7.0",
     "expose-loader": "^0.7.3",
     "file-loader": "^0.10.1",
     "node-sass": "^4.5.0",
