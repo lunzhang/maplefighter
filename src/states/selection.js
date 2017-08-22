@@ -10,6 +10,7 @@ export default class SelectionState extends Phaser.State {
     this.initFighterChoices();
     this.initPlayers();
     this.initKeys();
+
     const back = this.game.add.text(25, 25, 'Back', {
       fill: '#ffffff',
       fontSize: '32px',
@@ -19,6 +20,7 @@ export default class SelectionState extends Phaser.State {
       this.game.mode = 'menu';
       this.game.state.start('menu', true, false);
     });
+
     const start = this.game.add.text(this.game.world.width - 100, this.game.world.height - 50, 'Start', {
       fill: '#ffffff',
       fontSize: '32px',

@@ -1,18 +1,23 @@
 import Phaser from 'phaser';
 import Fighter from '../fighters/fighter';
+import Menu from '../ui/battle/menu';
 
 export default class BattleState extends Phaser.State {
   create() {
-    this.playerOne = new Fighter(this.game, 100, this.game.world.centerY, this.game.player0);
-    this.playerTwo = new Fighter(this.game, this.game.world.width - 100, this.game.world.centerY, this.game.player1);
-
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    this.playerOne = new Fighter(this.game, 100, this.game.world.centerY, this.game.player0);
+    this.playerTwo = new Fighter(this.game, 200, this.game.world.centerY, this.game.player1);
+
+    this.menu = new Menu(this.game, [this.playerOne, this.playerTwo]);
   }
 
   update() {
     this.checkInputs();
-    this.playerOne.update();
-    this.playerTwo.update();
+    this.game.physics.arcade.collide(this.playerOne, this.playerTwo, () => {
+      console.log('hi');
+    });
+    // this.menu.update();
   }
 
   checkInputs() {

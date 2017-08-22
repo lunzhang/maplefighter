@@ -1,11 +1,17 @@
-export default class Fighter {
-  constructor(game, x, y, frame) {
-    this.game = game;
-    this.sprite = game.add.sprite(x, y, frame);
-    game.physics.arcade.enable(this.sprite);
-    this.sprite.body.collideWorldBounds = true;
-    this.sprite.width = 60;
-    this.sprite.height = 60;
+import Phaser from 'phaser';
+
+const IDLE_STATE = 'IDLE_STATE';
+const JUMP_STATE = 'JUMP_STATE';
+
+export default class Fighter extends Phaser.Sprite {
+  constructor(game, x, y, key, frame) {
+    super(game, x, y, key, frame);
+    this.game.add.existing(this);
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.body.collideWorldBounds = true;
+
+    this.width = 60;
+    this.height = 60;
     this.actions = {
       up: false,
       left: false,
@@ -15,50 +21,53 @@ export default class Fighter {
       jump: false,
       defend: false,
     };
+    this.health = 100;
+    this.mana = 100;
+    this.speed = 100;
 
-    this.jump = this.game.add.tween(this.sprite);
-    this.jump.to({ y: this.sprite.y - 50 }, 1500);
+    this.jump = this.game.add.tween(this);
+    this.jump.to({ y: 0 }, 500);
     this.jump.onComplete.add(() => this.fall.start());
 
-    this.fall = this.game.add.tween(this.sprite);
-    this.fall.to({ y: this.sprite.y + 50 }, 1500);
+    this.fall = this.game.add.tween(this);
+    this.fall.to({ y: 0 }, 500);
     this.fall.onComplete.add(() => {
-      this.inProgress = false;
+      this.state = IDLE_STATE;
     });
+    this.state = IDLE_STATE;
   }
 
   update() {
-    if (this.inProgress) {
-      // in action
-    } else {
-      this.processAction();
-    }
-
+    this.processAction();
     this.reset();
   }
 
   processAction() {
-    if (this.actions.up) {
-      this.sprite.y -= 3;
+    this.body.velocity.y = 0;
+    this.body.velocity.x = 0;
+
+    if (this.actions.up && this.y >= this.game.world.centerY) {
+      this.body.velocity.y = -100;
     }
     if (this.actions.left) {
-      this.sprite.x -= 3;
+      this.body.velocity.x = -100;
     }
-    if (this.actions.down) {
-      this.sprite.y += 3;
+    if (this.actions.down && this.state === IDLE_STATE) {
+      this.body.velocity.y = 100;
     }
     if (this.actions.right) {
-      this.sprite.x += 3;
+      this.body.velocity.x = 100;
     }
+
     if (this.actions.attack) {
       this.attack();
     }
-    if (this.actions.jump) {
-      console.log(this.jump);
-      this.jump.updateTweenData('y', this.sprite.y - 50);
-      this.fall.properties.y = this.sprite.y + 50;
+
+    if (this.actions.jump && this.state === IDLE_STATE) {
+      this.jump.updateTweenData('vEnd', { y: this.y - 100 });
+      this.fall.updateTweenData('vEnd', { y: this.y });
       this.jump.start();
-      this.inProgress = true;
+      this.state = JUMP_STATE;
     }
   }
 
