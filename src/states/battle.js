@@ -14,10 +14,7 @@ export default class BattleState extends Phaser.State {
 
   update() {
     this.checkInputs();
-    this.game.physics.arcade.collide(this.playerOne, this.playerTwo, () => {
-      console.log('hi');
-    });
-    // this.menu.update();
+    this.menu.update();
   }
 
   checkInputs() {
