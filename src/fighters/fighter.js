@@ -67,8 +67,8 @@ export default class Fighter extends Phaser.Sprite {
     boundsB.scale(1, 0.5);
     const shadowBoundsA = boundsA.clone();
     const shadowBoundsB = boundsB.clone();
-    shadowBoundsA.y = spriteA.state === JUMP_STATE || JUMP_ATTACK_STATE ? spriteA.jump.timeline[0].vStart : shadowBoundsA.y;
-    shadowBoundsB.y = spriteB.state === JUMP_STATE || JUMP_ATTACK_STATE ? spriteB.jump.timeline[0].vStart : shadowBoundsB.y;
+    shadowBoundsA.y = (spriteA.state === JUMP_STATE || spriteA.state === JUMP_ATTACK_STATE) ? spriteA.jump.timeline[0].vStart.y : shadowBoundsA.y;
+    shadowBoundsB.y = (spriteB.state === JUMP_STATE || spriteB.state === JUMP_ATTACK_STATE) ? spriteB.jump.timeline[0].vStart.y : shadowBoundsB.y;
     return Phaser.Rectangle.intersects(boundsA, boundsB) && Phaser.Rectangle.intersects(shadowBoundsA, shadowBoundsB);
   }
 
