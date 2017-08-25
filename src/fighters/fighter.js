@@ -9,25 +9,20 @@ const DEFEND_STATE = 'DEFEND_STATE';
 export default class Fighter extends Phaser.Sprite {
   constructor(game, x, y, key, frame) {
     super(game, x, y, key, frame);
+
+    this.width = 60;
+    this.height = 60;
+    this.health = 100;
+    this.mana = 100;
+    this.speed = 100;
+    this.actions = {};
+
+    // enable physics
     this.game.add.existing(this);
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.collideWorldBounds = true;
 
-    this.width = 60;
-    this.height = 60;
-    this.actions = {
-      up: false,
-      left: false,
-      down: false,
-      right: false,
-      attack: false,
-      jump: false,
-      defend: false,
-    };
-    this.health = 100;
-    this.mana = 100;
-    this.speed = 100;
-
+    // jump and fall animations
     this.jump = this.game.add.tween(this);
     this.jump.to({ y: 0 }, 500);
     this.jump.onComplete.add(() => this.fall.start());
@@ -36,29 +31,20 @@ export default class Fighter extends Phaser.Sprite {
     this.fall.to({ y: 0 }, 500);
     this.fall.onComplete.add(() => {
       this.state = IDLE_STATE;
-      this.reset();
     });
     this.state = IDLE_STATE;
   }
 
   update() {
-    this.body.velocity.y = 0;
-    this.body.velocity.x = 0;
     switch (this.state) {
       case IDLE_STATE:
-        this.processAction();
-        break;
       case JUMP_STATE:
-        this.processAttack();
-        this.processMovement();
-        break;
       case JUMP_ATTACK_STATE:
         this.processMovement();
         break;
       case ATTACK_STATE:
         break;
     }
-    this.reset();
   }
 
   checkCollision() {
@@ -87,47 +73,49 @@ export default class Fighter extends Phaser.Sprite {
   }
 
   onHit(damage) {
-    if(!this.alive) return;
+    if (!this.alive) return;
     this.health = this.health - damage;
     if (this.health <= 0) this.kill();
   }
 
   processMovement() {
-    if (this.actions.up && this.y >= this.game.world.centerY) {
-      this.body.velocity.y = -100;
+    if (this.actions.up.isDown && this.y >= this.game.world.centerY) {
+      this.body.y -= 2;
     }
-    if (this.actions.left) {
-      this.body.velocity.x = -100;
+    if (this.actions.left.isDown) {
+      this.body.x -= 2;
     }
-    if (this.actions.down && this.state === IDLE_STATE) {
-      this.body.velocity.y = 100;
+    if (this.actions.down.isDown && this.state === IDLE_STATE) {
+      this.body.y += 2;
     }
-    if (this.actions.right) {
-      this.body.velocity.x = 100;
+    if (this.actions.right.isDown) {
+      this.body.x += 2;
     }
   }
 
   processAttack() {
-    if (this.actions.attack) {
-      if (this.state === JUMP_STATE) {
+    switch (this.state) {
+      case JUMP_STATE:
         this.state = JUMP_ATTACK_STATE;
         setTimeout(() => {
           this.state = IDLE_STATE;
         }, 1000);
-      } else {
+        this.checkCollision();
+        break;
+      case IDLE_STATE:
         this.state = ATTACK_STATE;
         this.body.velocity.y = 0;
         this.body.velocity.x = 0;
         setTimeout(() => {
           this.state = IDLE_STATE;
         }, 600);
-      }
-      this.checkCollision();
+        this.checkCollision();
+        break;
     }
   }
 
   processJump() {
-    if (this.actions.jump) {
+    if (this.state === IDLE_STATE) {
       this.jump.updateTweenData('vEnd', { y: this.y - 100 });
       this.fall.updateTweenData('vEnd', { y: this.y });
       this.state = JUMP_STATE;
@@ -136,7 +124,7 @@ export default class Fighter extends Phaser.Sprite {
   }
 
   processDefend() {
-    if (this.actions.defend) {
+    if (this.state === IDLE_STATE) {
       this.state = DEFEND_STATE;
       this.body.velocity.y = 0;
       this.body.velocity.x = 0;
@@ -144,22 +132,5 @@ export default class Fighter extends Phaser.Sprite {
         this.state = IDLE_STATE;
       }, 600);
     }
-  }
-
-  processAction() {
-    this.processMovement();
-    this.processAttack();
-    this.processJump();
-    this.processDefend();
-  }
-
-  reset() {
-    this.actions.up = false;
-    this.actions.left = false;
-    this.actions.down = false;
-    this.actions.right = false;
-    this.actions.attack = false;
-    this.actions.jump = false;
-    this.actions.defend = false;
   }
 }
