@@ -4,6 +4,7 @@ const IDLE_STATE = 'IDLE_STATE';
 const JUMP_STATE = 'JUMP_STATE';
 const ATTACK_STATE = 'ATTACK_STATE';
 const JUMP_ATTACK_STATE = 'JUMP_ATTACK_STATE';
+const DEFEND_STATE = 'DEFEND_STATE';
 
 export default class Fighter extends Phaser.Sprite {
   constructor(game, x, y, key, frame) {
@@ -65,7 +66,8 @@ export default class Fighter extends Phaser.Sprite {
     this.game.world.hash.forEach((sprite) => {
       if (sprite === this) return;
       if (this.isColliding(this, sprite)) {
-        if (this.state === ATTACK_STATE || this.state === JUMP_ATTACK_STATE) {
+        if (this.state === ATTACK_STATE || this.state === JUMP_ATTACK_STATE
+          && sprite.state !== DEFEND_STATE) {
           sprite.onHit(10);
         }
       }
@@ -85,6 +87,7 @@ export default class Fighter extends Phaser.Sprite {
   }
 
   onHit(damage) {
+    if(!this.alive) return;
     this.health = this.health - damage;
     if (this.health <= 0) this.kill();
   }
@@ -106,7 +109,20 @@ export default class Fighter extends Phaser.Sprite {
 
   processAttack() {
     if (this.actions.attack) {
-      this.attack();
+      if (this.state === JUMP_STATE) {
+        this.state = JUMP_ATTACK_STATE;
+        setTimeout(() => {
+          this.state = IDLE_STATE;
+        }, 1000);
+      } else {
+        this.state = ATTACK_STATE;
+        this.body.velocity.y = 0;
+        this.body.velocity.x = 0;
+        setTimeout(() => {
+          this.state = IDLE_STATE;
+        }, 600);
+      }
+      this.checkCollision();
     }
   }
 
@@ -119,24 +135,22 @@ export default class Fighter extends Phaser.Sprite {
     }
   }
 
+  processDefend() {
+    if (this.actions.defend) {
+      this.state = DEFEND_STATE;
+      this.body.velocity.y = 0;
+      this.body.velocity.x = 0;
+      setTimeout(() => {
+        this.state = IDLE_STATE;
+      }, 600);
+    }
+  }
+
   processAction() {
     this.processMovement();
     this.processAttack();
     this.processJump();
-  }
-
-  attack() {
-    if (this.state === JUMP_STATE) {
-      this.state = JUMP_ATTACK_STATE;
-    } else {
-      this.state = ATTACK_STATE;
-      this.body.velocity.y = 0;
-      this.body.velocity.x = 0;
-    }
-    this.checkCollision();
-    setTimeout(() => {
-      this.state = IDLE_STATE;
-    }, 600);
+    this.processDefend();
   }
 
   reset() {
