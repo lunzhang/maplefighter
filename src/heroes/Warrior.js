@@ -6,12 +6,13 @@ const DARK_IMPALE = 'DARK_IMPALE';
 const FLAME_CHARGE = 'FLAME_CHARGE';
 const BLIZZARD_CHARGE = 'BLIZZARD_CHARGE';
 const LIGHTING_CHARGE = 'LIGHTING_CHARGE';
+const COMBO_ATTACK = 'COMBO_ATTACK';
 const SHOUT = 'SHOUT';
 
 export default class Warrior extends Hero {
   constructor(game, x, y) {
-    super(game, x, y, HeroTypes.WARRIOR);
-
+    super(game, x, y);
+    
     this.combos.push({
       name: SLASH_BLAST,
       keys: ['left', 'right', 'attack']
@@ -36,11 +37,24 @@ export default class Warrior extends Hero {
       name: SHOUT,
       keys: ['down', 'up', 'defend']
     });
+
+    this.sprite = this.create(0, 0, HeroTypes.WARRIOR);
+    this.sprite.body.collideWorldBounds = true;
+    this.comboAttack = this.game.add.image(0, 0, COMBO_ATTACK);
+    this.comboAttack.width = 75;
+    this.comboAttack.height = 75;
+
+    this.add(this.comboAttack);
+    this.add(this.sprite);
+
   }
 
   activateCombo(combo) {
     super.activateCombo(combo);
     switch(combo.name) {
+        case COMBO_ATTACK:
+          this.activateComboAttack();
+          break;
         case SLASH_BLAST:
           this.activateSlashBlast();
           break;
@@ -60,6 +74,10 @@ export default class Warrior extends Hero {
           this.activateShout();
           break;
     }
+  }
+
+  activateComboAttack() {
+
   }
 
   activateSlashBlast() {

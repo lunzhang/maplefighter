@@ -1,26 +1,30 @@
 import Phaser from 'phaser';
 import HeroStates from './HeroStates';
 
-export default class Hero extends Phaser.Sprite {
-  constructor(game, x, y, key, frame) {
-    super(game, x, y, key, frame);
+export default class Hero extends Phaser.Group {
+  constructor(game, x, y) {
+    super(game);
 
     this.width = 60;
     this.height = 60;
     this.health = 100;
     this.mana = 100;
     this.speed = 100;
+    this.x = x;
+    this.y = y;
     this.actions = {};
     this.combos = [];
     this.state = HeroStates.IDLE_STATE;
 
-    this.activeCombo = new Phaser.Sprite(game,x,y,'','');
+    this.game.sprites.push(this);
+
+    this.activeCombo = new Phaser.Sprite(game, x, y);
     this.activeCombo.kill();
 
     // enable physics
     this.game.add.existing(this);
-    this.game.physics.enable(this, Phaser.Physics.ARCADE);
-    this.body.collideWorldBounds = true;
+    this.enableBody = true;
+    this.physicsBodyType = Phaser.Physics.ARCADE;
 
     // jump and fall animations
     this.jump = this.game.add.tween(this);
@@ -57,14 +61,13 @@ export default class Hero extends Phaser.Sprite {
   }
 
   activateCombo(combo) {
-    console.log(combo);
     this.state = HeroStates.COMBO_STATE;
   }
 
   //check if sprite is colliding with other sprites
   checkCollision() {
     if (this.state === HeroStates.IDLE_STATE) return;
-    this.game.world.hash.forEach((sprite) => {
+    this.game.sprites.forEach((sprite) => {
       if (sprite === this) return;
       if (this.isColliding(this, sprite)) {
         if (this.state === HeroStates.ATTACK_STATE || this.state === HeroStates.JUMP_ATTACK_STATE) {
@@ -115,16 +118,16 @@ export default class Hero extends Phaser.Sprite {
 
   processMovement() {
     if (this.actions.up.isDown && this.y >= this.game.world.centerY) {
-      this.body.y -= 2;
+      this.y -= 2;
     }
     if (this.actions.left.isDown) {
-      this.body.x -= 2;
+      this.x -= 2;
     }
     if (this.actions.down.isDown && this.state === HeroStates.IDLE_STATE) {
-      this.body.y += 2;
+      this.y += 2;
     }
     if (this.actions.right.isDown) {
-      this.body.x += 2;
+      this.x += 2;
     }
   }
 
@@ -140,8 +143,6 @@ export default class Hero extends Phaser.Sprite {
         break;
       case HeroStates.IDLE_STATE:
         this.state = HeroStates.ATTACK_STATE;
-        this.body.velocity.y = 0;
-        this.body.velocity.x = 0;
         setTimeout(() => {
           this.state = HeroStates.IDLE_STATE;
         }, 600);
@@ -165,8 +166,6 @@ export default class Hero extends Phaser.Sprite {
     this.checkCombos();
     if (this.state === HeroStates.IDLE_STATE) {
       this.state = HeroStates.DEFEND_STATE;
-      this.body.velocity.y = 0;
-      this.body.velocity.x = 0;
       setTimeout(() => {
         this.state = HeroStates.IDLE_STATE;
       }, 600);

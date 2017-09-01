@@ -14,13 +14,13 @@ export default class BootState extends Phaser.State {
     this.ready = true;
     this.game.stage.backgroundColor = '#d77826';
 
-    // this.game.load.image(HeroTypes.ARCHER, 'resources/imgs/fighters/archer.png');
-    // this.game.load.image(HeroTypes.CANNONEER, 'resources/imgs/fighters/cannoneer.png');
-    // this.game.load.image(HeroTypes.DUAL_BLADE, 'resources/imgs/fighters/dual_blade.png');
-    // this.game.load.image(HeroTypes.MAGICIAN, 'resources/imgs/fighters/magician.png');
-    // this.game.load.image(HeroTypes.PIRATE, 'resources/imgs/fighters/pirate.png');
-    // this.game.load.image(HeroTypes.THIEF, 'resources/imgs/fighters/thief.png');
-    // this.game.load.image(HeroTypes.WARRIOR, 'resources/imgs/fighters/warrior.png');
+    // this.game.load.image(HeroTypes.ARCHER, 'resources/imgs/heroes/archer.png');
+    // this.game.load.image(HeroTypes.CANNONEER, 'resources/imgs/heroes/cannoneer.png');
+    // this.game.load.image(HeroTypes.DUAL_BLADE, 'resources/imgs/heroes/dual_blade.png');
+    // this.game.load.image(HeroTypes.MAGICIAN, 'resources/imgs/heroes/magician.png');
+    // this.game.load.image(HeroTypes.PIRATE, 'resources/imgs/heroes/pirate.png');
+    // this.game.load.image(HeroTypes.THIEF, 'resources/imgs/heroes/thief.png');
+    // this.game.load.image(HeroTypes.WARRIOR, 'resources/imgs/heroes/warrior.png');
   }
 
   update() {
