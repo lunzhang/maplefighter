@@ -5,6 +5,7 @@ export default class Hero extends Phaser.Group {
   constructor(game, x, y) {
     super(game);
 
+    this.normalAttack = 5;
     this.width = 60;
     this.height = 60;
     this.health = 100;
@@ -16,9 +17,10 @@ export default class Hero extends Phaser.Group {
     this.combos = [];
     this.state = HeroStates.IDLE_STATE;
 
-    this.game.sprites.push(this);
+    this.game.heroes.push(this);
 
-    this.activeCombo = new Phaser.Sprite(game, x, y);
+    this.activeCombo = this.create(0, 0);
+    this.activeCombo.anchor.set(0.5);
     this.activeCombo.kill();
 
     // enable physics
@@ -54,7 +56,7 @@ export default class Hero extends Phaser.Group {
       this.game.world.hash.forEach((sprite) => {
         if (sprite === this) return;
         if (this.isColliding(this.activeCombo, sprite)) {
-          sprite.onHit(10);
+          sprite.onHit(this.activeCombo.damage);
         }
       });
     }
@@ -67,11 +69,11 @@ export default class Hero extends Phaser.Group {
   //check if sprite is colliding with other sprites
   checkCollision() {
     if (this.state === HeroStates.IDLE_STATE) return;
-    this.game.sprites.forEach((sprite) => {
-      if (sprite === this) return;
-      if (this.isColliding(this, sprite)) {
+    this.game.heroes.forEach((hero) => {
+      if (hero === this) return;
+      if (this.isColliding(this.sprite, hero.sprite)) {
         if (this.state === HeroStates.ATTACK_STATE || this.state === HeroStates.JUMP_ATTACK_STATE) {
-          sprite.onHit(10);
+          hero.onHit(this.normalAttack);
         }
       }
     });

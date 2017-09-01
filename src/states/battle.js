@@ -7,7 +7,7 @@ import Menu from '../ui/battle/menu';
 
 export default class BattleState extends Phaser.State {
   create() {
-    this.game.sprites = [];
+    this.game.heroes = [];
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.playerOne = this.createHero(this.game.player0, 100, this.game.world.centerY);
     this.playerTwo = this.createHero(this.game.player1, 200, this.game.world.centerY);

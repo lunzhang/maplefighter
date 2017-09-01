@@ -1,4 +1,5 @@
 import Hero from './Hero';
+import HeroStates from './HeroStates';
 import HeroTypes from './HeroTypes';
 
 const SLASH_BLAST = 'SLASH_BLAST';
@@ -12,14 +13,14 @@ const SHOUT = 'SHOUT';
 export default class Warrior extends Hero {
   constructor(game, x, y) {
     super(game, x, y);
-    
+
     this.combos.push({
       name: SLASH_BLAST,
-      keys: ['left', 'right', 'attack']
+      keys: ['right', 'left', 'attack']
     });
     this.combos.push({
       name: DARK_IMPALE,
-      keys: ['down', 'left', 'attack']
+      keys: ['left', 'right', 'attack']
     });
     this.combos.push({
       name: FLAME_CHARGE,
@@ -34,19 +35,34 @@ export default class Warrior extends Hero {
       keys: ['down', 'right', 'defend']
     });
     this.combos.push({
-      name: SHOUT,
+      name: COMBO_ATTACK,
       keys: ['down', 'up', 'defend']
+    });
+    this.combos.push({
+      name: SHOUT,
+      keys: ['down', 'up', 'attack']
     });
 
     this.sprite = this.create(0, 0, HeroTypes.WARRIOR);
     this.sprite.body.collideWorldBounds = true;
+    this.sprite.anchor.set(0.5);
+
     this.comboAttack = this.game.add.image(0, 0, COMBO_ATTACK);
-    this.comboAttack.width = 75;
-    this.comboAttack.height = 75;
-
+    this.comboAttack.width = 50;
+    this.comboAttack.height = 50;
+    this.comboAttack.kill();
+    this.comboAttack.anchor.set(0.5);
     this.add(this.comboAttack);
-    this.add(this.sprite);
 
+    this.charge = this.game.add.image(0, 0);
+    this.charge.width = 30;
+    this.charge.height = 30;
+    this.charge.kill();
+    this.charge.anchor.set(0.5);
+    this.add(this.charge);
+
+    this.sprite.bringToTop();
+    this.charge.bringToTop();
   }
 
   activateCombo(combo) {
@@ -77,13 +93,26 @@ export default class Warrior extends Hero {
   }
 
   activateComboAttack() {
-
+    if(this.comboAttack.isAlive && this.comboAttack.frame < 5) {
+      this.normalAttack += 5;
+      this.comboAttack.setFrame(this.comboAttack.frame + 1);
+    } else {
+      this.normalAttack += 5;
+      this.comboAttack.revive();
+    }
+    setTimeout(() => {
+      this.state = HeroStates.IDLE_STATE;
+    },800);
   }
 
   activateSlashBlast() {
     this.activeCombo.loadTexture(SLASH_BLAST);
     this.activeCombo.revive();
+    this.activeCombo.y = 0;
+    this.activeCombo.x = 25;
+
     setTimeout(() => {
+      this.state = HeroStates.IDLE_STATE;
       this.activeCombo.kill();
     },600);
   }
@@ -91,30 +120,62 @@ export default class Warrior extends Hero {
   activateDarkImpale() {
     this.activeCombo.loadTexture(DARK_IMPALE);
     this.activeCombo.revive();
+    this.activeCombo.y = 0;
+    this.activeCombo.x = 25;
+
     setTimeout(() => {
+      this.state = HeroStates.IDLE_STATE;
       this.activeCombo.kill();
     },600);
   }
 
   activateFlameCharge() {
-    this.activeCombo.loadTexture(FLAME_CHARGE);
-    this.activeCombo.visibility = true;
+    this.charge.loadTexture(FLAME_CHARGE);
+    this.charge.revive();
+
+    setTimeout(() => {
+      this.state = HeroStates.IDLE_STATE;
+    },600);
+
+    setTimeout(() => {
+      this.charge.kill();
+    },1000);
   }
 
   activateBlizzardCharge() {
-    this.activeCombo.loadTexture(BLIZZARD_CHARGE);
-    this.activeCombo.visibility = true;
+    this.charge.loadTexture(BLIZZARD_CHARGE);
+    this.charge.revive();
+
+    setTimeout(() => {
+      this.state = HeroStates.IDLE_STATE;
+    },600);
+
+    setTimeout(() => {
+      this.charge.kill();
+    },1000);
   }
 
   activateLightingCharge() {
-    this.activeCombo.loadTexture(LIGHTING_CHARGE);
-    this.activeCombo.visibility = true;
+    this.charge.loadTexture(LIGHTING_CHARGE);
+    this.charge.revive();
+
+    setTimeout(() => {
+      this.state = HeroStates.IDLE_STATE;
+    },600);
+
+    setTimeout(() => {
+      this.charge.kill();
+    },1000);
   }
 
   activateShout() {
     this.activeCombo.loadTexture(SHOUT);
     this.activeCombo.revive();
+    this.activeCombo.y = -30;
+    this.activeCombo.x = 0;
+
     setTimeout(() => {
+      this.state = HeroStates.IDLE_STATE;
       this.activeCombo.kill();
     },600);
   }
