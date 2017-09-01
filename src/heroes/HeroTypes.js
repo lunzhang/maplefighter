@@ -1,0 +1,17 @@
+const ARCHER = 'ARCHER';
+const CANNONEER = 'CANNONEER';
+const DUAL_BLADE = 'DUAL_BLADE';
+const MAGICIAN = 'MAGICIAN';
+const PIRATE = 'PIRATE';
+const THIEF = 'THIEF';
+const WARRIOR = 'WARRIOR';
+
+export default {
+  ARCHER,
+  CANNONEER,
+  DUAL_BLADE,
+  MAGICIAN,
+  PIRATE,
+  THIEF,
+  WARRIOR,
+}

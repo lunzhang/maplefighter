@@ -1,13 +1,12 @@
 import Phaser from 'phaser';
-
-const fighters = ['archer', 'cannoneer', 'dual_blade', 'magician', 'pirate', 'thief', 'warrior'];
+import HeroTypes from '../heroes/HeroTypes';
 
 export default class SelectionState extends Phaser.State {
   create() {
-    this.fighterSelections = [];
-    this.fighterChoices = [];
-    this.initFighterSelection();
-    this.initFighterChoices();
+    this.heroSelections = [];
+    this.heroChoices = [];
+    this.initHeroSelection();
+    this.initHeroChoices();
     this.initPlayers();
     this.initKeys();
 
@@ -36,9 +35,9 @@ export default class SelectionState extends Phaser.State {
 
   initPlayers() {
     this.playerOne = this.createPlayer(0);
-    this.selectFighter(this.playerOne);
+    this.selectHero(this.playerOne);
     this.playerTwo = this.createPlayer(1);
-    this.selectFighter(this.playerTwo);
+    this.selectHero(this.playerTwo);
   }
 
   initKeys() {
@@ -59,13 +58,13 @@ export default class SelectionState extends Phaser.State {
     });
     const d = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
     d.onDown.add(() => {
-      if (this.playerOne.index < this.fighterChoices.length - 1) {
+      if (this.playerOne.index < this.heroChoices.length - 1) {
         this.highlightChoice(this.playerOne.index + 1, this.playerOne);
       }
     });
     const j = this.game.input.keyboard.addKey(Phaser.Keyboard.J);
     j.onDown.add(() => {
-      this.selectFighter(this.playerOne);
+      this.selectHero(this.playerOne);
     });
     const k = this.game.input.keyboard.addKey(Phaser.Keyboard.K);
     k.onDown.add(() => {
@@ -89,13 +88,13 @@ export default class SelectionState extends Phaser.State {
     });
     const right = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
     right.onDown.add(() => {
-      if (this.playerTwo.index < this.fighterChoices.length - 1) {
+      if (this.playerTwo.index < this.heroChoices.length - 1) {
         this.highlightChoice(this.playerTwo.index + 1, this.playerTwo);
       }
     });
     const one = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_1);
     one.onDown.add(() => {
-      this.selectFighter(this.playerTwo);
+      this.selectHero(this.playerTwo);
     });
     const two = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_2);
     two.onDown.add(() => {
@@ -103,32 +102,32 @@ export default class SelectionState extends Phaser.State {
     });
   }
 
-  initFighterSelection() {
+  initHeroSelection() {
     for (let i = 0; i < 2; i++) {
-      const fighterSelection = this.game.add.graphics(200 + (i * 300), 100);
-      fighterSelection.beginFill(0xffffff);
-      fighterSelection.drawRect(0, 0, 150, 200);
-      fighterSelection.endFill();
-      this.fighterSelections.push(fighterSelection);
+      const heroSelection = this.game.add.graphics(200 + (i * 300), 100);
+      heroSelection.beginFill(0xffffff);
+      heroSelection.drawRect(0, 0, 150, 200);
+      heroSelection.endFill();
+      this.heroSelections.push(heroSelection);
     }
   }
 
-  initFighterChoices() {
-    for (let i = 0; i < fighters.length; i++) {
-      const fighterChoice = this.game.add.image(50 + (i * 105), 450, fighters[i]);
-      fighterChoice.width = 75;
-      fighterChoice.height = 75;
-      this.fighterChoices.push(fighterChoice);
-    }
+  initHeroChoices() {
+    Object.keys(HeroTypes).forEach((type, i) => {
+      const heroChoice = this.game.add.image(50 + (i * 105), 450, type);
+      heroChoice.width = 75;
+      heroChoice.height = 75;
+      this.heroChoices.push(heroChoice);
+    });
   }
 
   createPlayer(num) {
-    const fighterSelection = this.fighterSelections[num];
+    const heroSelection = this.heroSelections[num];
     const player = {
       id: num,
       index: num,
       border: 10,
-      fighter: this.game.add.image(fighterSelection.left, fighterSelection.top),
+      hero: this.game.add.image(heroSelection.left, heroSelection.top),
       highlight: this.game.add.graphics(),
     };
     if (num === 0) {
@@ -138,30 +137,30 @@ export default class SelectionState extends Phaser.State {
     }
     player.highlight.lineStyle(2, player.color, 1);
     player.highlight.drawRect(
-      this.fighterChoices[player.index].left - 10,
-      this.fighterChoices[player.index].top - 10,
-      this.fighterChoices[player.index].width + 20,
-      this.fighterChoices[player.index].height + 20,
+      this.heroChoices[player.index].left - 10,
+      this.heroChoices[player.index].top - 10,
+      this.heroChoices[player.index].width + 20,
+      this.heroChoices[player.index].height + 20,
     );
 
     return player;
   }
 
-  selectFighter(player) {
-    const fighterSelection = this.fighterSelections[player.id];
-    player.fighter.loadTexture(fighters[player.index]);
-    player.fighter.width = fighterSelection.width;
-    player.fighter.height = fighterSelection.height;
-    this.game[`player${player.id}`] = fighters[player.index];
+  selectHero(player) {
+    const heroSelection = this.heroSelections[player.id];
+    player.hero.loadTexture(this.heroChoices[player.index].key);
+    player.hero.width = heroSelection.width;
+    player.hero.height = heroSelection.height;
+    this.game[`player${player.id}`] = this.heroChoices[player.index].key;
   }
 
   cancelSelect(player) {
-    player.fighter.loadTexture();
+    player.hero.loadTexture();
     this.game[`player${player.id}`] = null;
   }
 
   highlightChoice(index, player) {
-    const choice = this.fighterChoices[index];
+    const choice = this.heroChoices[index];
     let border = 10;
     if (
       (player === this.playerTwo && this.playerOne.index === index && this.playerOne.border === border) ||

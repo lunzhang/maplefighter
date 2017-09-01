@@ -1,17 +1,41 @@
 import Phaser from 'phaser';
-import Fighter from '../fighters/fighter';
+import Fighter from '../heroes/Warrior';
+import Warrior from '../heroes/Warrior';
+import HeroTypes from '../heroes/HeroTypes';
+
 import Menu from '../ui/battle/menu';
 
 export default class BattleState extends Phaser.State {
   create() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.playerOne = new Fighter(this.game, 100, this.game.world.centerY, this.game.player0);
-    this.playerTwo = new Fighter(this.game, 200, this.game.world.centerY, this.game.player1);
+    this.playerOne = this.createHero(this.game.player0, 100, this.game.world.centerY);
+    this.playerTwo = this.createHero(this.game.player1, 200, this.game.world.centerY);
     this.menu = new Menu(this.game, [this.playerOne, this.playerTwo]);
 
     this.initActions();
   }
 
+  createHero(hero, x, y) {
+    switch(hero) {
+      case HeroTypes.ARCHER:
+        return new Archer(this.game, x, y);
+      case HeroTypes.CANNONEER:
+        return new Cannoneer(this.game, x, y);
+      case HeroTypes.DUAL_BLADE:
+        return new DualBlade(this.game, x, y);
+      case HeroTypes.MAGICIAN:
+        return new Magician(this.game, x, y);
+      case HeroTypes.PIRATE:
+        return new Pirate(this.game, x, y);
+      case HeroTypes.THIEF:
+        return new Thief(this.game, x, y);
+      case HeroTypes.WARRIOR:
+        return new Warrior(this.game, x, y);
+    }
+    return new Warrior(this.game, x, y);
+  }
+
+  //event listeners for players
   initActions() {
     // player one actions
     this.playerOne.actions.up = this.game.input.keyboard.addKey(Phaser.Keyboard.W);

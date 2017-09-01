@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import HeroTypes from '../heroes/HeroTypes';
 
 export default class BootState extends Phaser.State {
   constructor() {
@@ -13,13 +14,13 @@ export default class BootState extends Phaser.State {
     this.ready = true;
     this.game.stage.backgroundColor = '#d77826';
 
-    // this.game.load.image('archer', 'resources/imgs/archer.png');
-    // this.game.load.image('cannoneer', 'resources/imgs/cannoneer.png');
-    // this.game.load.image('dual_blade', 'resources/imgs/dual_blade.png');
-    // this.game.load.image('magician', 'resources/imgs/magician.png');
-    // this.game.load.image('pirate', 'resources/imgs/pirate.png');
-    // this.game.load.image('thief', 'resources/imgs/thief.png');
-    // this.game.load.image('warrior', 'resources/imgs/warrior.png');
+    // this.game.load.image(HeroTypes.ARCHER, 'resources/imgs/fighters/archer.png');
+    // this.game.load.image(HeroTypes.CANNONEER, 'resources/imgs/fighters/cannoneer.png');
+    // this.game.load.image(HeroTypes.DUAL_BLADE, 'resources/imgs/fighters/dual_blade.png');
+    // this.game.load.image(HeroTypes.MAGICIAN, 'resources/imgs/fighters/magician.png');
+    // this.game.load.image(HeroTypes.PIRATE, 'resources/imgs/fighters/pirate.png');
+    // this.game.load.image(HeroTypes.THIEF, 'resources/imgs/fighters/thief.png');
+    // this.game.load.image(HeroTypes.WARRIOR, 'resources/imgs/fighters/warrior.png');
   }
 
   update() {
