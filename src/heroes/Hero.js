@@ -44,9 +44,13 @@ export default class Hero extends Phaser.Group {
     this.animations = {};
     this.animations.stand = this.sprite.animations.add('stand', [0, 1 ,2]);
     this.animations.walk = this.sprite.animations.add('walk', [3, 4, 5, 6]);
-    this.animations.walk.onComplete.add(() => {
+    this.animations.jump = this.sprite.animations.add('jump', [7]);
+  }
+
+  checkAnimation() {
+    if(this.animations.walk.isPlaying) {
       this.playAnimation('stand');
-    });
+    }
   }
 
   update() {
@@ -189,10 +193,13 @@ export default class Hero extends Phaser.Group {
   playAnimation(animation) {
       switch(animation) {
         case 'stand':
-          this.sprite.animations.play('stand', 3, true);
+          if(!this.animations.stand.isPlaying) this.sprite.animations.play('stand', 3, true);
           break;
         case 'walk':
-          this.sprite.animations.play('walk', 4);
+          if(!this.animations.walk.isPlaying) this.sprite.animations.play('walk', 4);
+          break;
+        case 'jump':
+          if(!this.animations.jump.isPlaying) this.sprite.animations.play('jump', 1);
           break;
       }
   }

@@ -47,6 +47,18 @@ export default class BattleState extends Phaser.State {
     this.playerOne.actions.jump = this.game.input.keyboard.addKey(Phaser.Keyboard.K);
     this.playerOne.actions.defend = this.game.input.keyboard.addKey(Phaser.Keyboard.L);
 
+    this.playerOne.actions.up.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerOne);
+    this.playerOne.actions.down.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerOne);
+    this.playerOne.actions.left.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerOne);
+    this.playerOne.actions.right.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerOne);
     this.playerOne.actions.attack.onDown.add(function () {
       this.processAttack();
     }, this.playerOne);
@@ -66,6 +78,18 @@ export default class BattleState extends Phaser.State {
     this.playerTwo.actions.jump = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_2);
     this.playerTwo.actions.defend = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_3);
 
+    this.playerTwo.actions.up.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerTwo);
+    this.playerTwo.actions.down.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerTwo);
+    this.playerTwo.actions.left.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerTwo);
+    this.playerTwo.actions.right.onUp.add(function() {
+      this.checkAnimation();
+    }, this.playerTwo);
     this.playerTwo.actions.attack.onDown.add(function () {
       this.processAttack();
     }, this.playerTwo);
