@@ -7,7 +7,7 @@ const DRAGONS_BREATH = 'DRAGONS_BREATH';
 const PIERCING_ARROW = 'PIERCING_ARROW';
 const FLAME_SURGE = 'FLAME_SURGE';
 
-export default class Bowman extends Hero {
+export default class Archer extends Hero {
   constructor(game, x, y) {
     super(game, x, y, HeroTypes.ARCHER);
   }
@@ -15,7 +15,7 @@ export default class Bowman extends Hero {
   activateCombo(combo) {
     super.activateCombo(combo);
     switch(combo.name) {
-    
+
     }
   }
 

@@ -14,6 +14,14 @@ export default class Warrior extends Hero {
   constructor(game, x, y) {
     super(game, x, y);
 
+    this.initCombos();
+    this.initSprites();
+    super.initAnimations();
+
+    this.playAnimation('stand');
+  }
+
+  initCombos() {
     this.combos.push({
       name: SLASH_BLAST,
       keys: ['right', 'left', 'attack']
@@ -43,10 +51,6 @@ export default class Warrior extends Hero {
       keys: ['down', 'up', 'attack']
     });
 
-    this.sprite = this.create(0, 0, HeroTypes.WARRIOR);
-    this.sprite.body.collideWorldBounds = true;
-    this.sprite.anchor.set(0.5);
-
     this.comboAttack = this.game.add.image(0, 0, COMBO_ATTACK);
     this.comboAttack.width = 50;
     this.comboAttack.height = 50;
@@ -60,6 +64,12 @@ export default class Warrior extends Hero {
     this.charge.kill();
     this.charge.anchor.set(0.5);
     this.add(this.charge);
+  }
+
+  initSprites() {
+    this.sprite = this.create(0, 0, HeroTypes.WARRIOR + '-ss');
+    this.sprite.body.collideWorldBounds = true;
+    this.sprite.anchor.set(0.5);
 
     this.sprite.bringToTop();
     this.charge.bringToTop();

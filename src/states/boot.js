@@ -14,6 +14,8 @@ export default class BootState extends Phaser.State {
     this.ready = true;
     this.game.stage.backgroundColor = '#d77826';
 
+    this.game.load.spritesheet(HeroTypes.WARRIOR + '-ss', 'resources/imgs/heroes/warrior/warrior.png', 300, 300, 6);
+
     // this.game.load.image(HeroTypes.ARCHER, 'resources/imgs/heroes/archer.png');
     // this.game.load.image(HeroTypes.CANNONEER, 'resources/imgs/heroes/cannoneer.png');
     // this.game.load.image(HeroTypes.DUAL_BLADE, 'resources/imgs/heroes/dual_blade.png');

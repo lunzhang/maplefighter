@@ -38,7 +38,15 @@ export default class Hero extends Phaser.Group {
     this.fall.onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
     });
+  }
 
+  initAnimations() {
+    this.animations = {};
+    this.animations.stand = this.sprite.animations.add('stand', [0, 1 ,2]);
+    this.animations.walk = this.sprite.animations.add('walk', [3, 4, 5, 6]);
+    this.animations.walk.onComplete.add(() => {
+      this.playAnimation('stand');
+    });
   }
 
   update() {
@@ -120,15 +128,19 @@ export default class Hero extends Phaser.Group {
 
   processMovement() {
     if (this.actions.up.isDown && this.y >= this.game.world.centerY) {
+      this.playAnimation('walk');
       this.y -= 2;
     }
     if (this.actions.left.isDown) {
+      this.playAnimation('walk');
       this.x -= 2;
     }
     if (this.actions.down.isDown && this.state === HeroStates.IDLE_STATE) {
+      this.playAnimation('walk');
       this.y += 2;
     }
     if (this.actions.right.isDown) {
+      this.playAnimation('walk');
       this.x += 2;
     }
   }
@@ -172,5 +184,16 @@ export default class Hero extends Phaser.Group {
         this.state = HeroStates.IDLE_STATE;
       }, 600);
     }
+  }
+
+  playAnimation(animation) {
+      switch(animation) {
+        case 'stand':
+          this.sprite.animations.play('stand', 3, true);
+          break;
+        case 'walk':
+          this.sprite.animations.play('walk', 4);
+          break;
+      }
   }
 }
