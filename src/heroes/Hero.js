@@ -41,14 +41,14 @@ export default class Hero extends Phaser.Group {
   }
 
   initAnimations() {
-    this.animations = {};
-    this.animations.stand = this.sprite.animations.add('stand', [0, 1 ,2]);
-    this.animations.walk = this.sprite.animations.add('walk', [3, 4, 5, 6]);
-    this.animations.jump = this.sprite.animations.add('jump', [7]);
+    this.sprite.animations.add('stand', Phaser.Animation.generateFrameNames('stand', 1, 3), 3, true);
+    this.sprite.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 4), 4);
+    this.sprite.animations.add('pain', Phaser.Animation.generateFrameNames('pain', 1, 3), 3)
+    this.sprite.animations.add('jump', ['jump'], 1);
   }
 
   checkAnimation() {
-    if(this.animations.walk.isPlaying) {
+    if(this.sprite.animations.currentAnim.name === 'walk') {
       this.playAnimation('stand');
     }
   }
@@ -136,6 +136,7 @@ export default class Hero extends Phaser.Group {
       this.y -= 2;
     }
     if (this.actions.left.isDown) {
+      this.sprite.scale.x = 1;
       this.playAnimation('walk');
       this.x -= 2;
     }
@@ -144,6 +145,7 @@ export default class Hero extends Phaser.Group {
       this.y += 2;
     }
     if (this.actions.right.isDown) {
+      this.sprite.scale.x = -1;
       this.playAnimation('walk');
       this.x += 2;
     }
@@ -193,13 +195,13 @@ export default class Hero extends Phaser.Group {
   playAnimation(animation) {
       switch(animation) {
         case 'stand':
-          if(!this.animations.stand.isPlaying) this.sprite.animations.play('stand', 3, true);
+          if(this.sprite.animations.currentAnim.name !== 'stand') this.sprite.animations.play('stand');
           break;
         case 'walk':
-          if(!this.animations.walk.isPlaying) this.sprite.animations.play('walk', 4);
+          if(this.sprite.animations.currentAnim.name !== 'walk') this.sprite.animations.play('walk');
           break;
         case 'jump':
-          if(!this.animations.jump.isPlaying) this.sprite.animations.play('jump', 1);
+          if(this.sprite.animations.currentAnim.name !== 'jump') this.sprite.animations.play('jump');
           break;
       }
   }
