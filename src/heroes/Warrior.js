@@ -32,22 +32,22 @@ export default class Warrior extends Hero {
     this.sprite.animations.add('shout', Phaser.Animation.generateFrameNames('shout', 1, 14), 14);
     this.sprite.animations.add('slashblast', Phaser.Animation.generateFrameNames('sb', 1, 10), 9);
 
-    this.sprite.animations.getAnimation('darkimpale').onComplete(() => {
+    this.sprite.animations.getAnimation('darkimpale').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
     });
-    this.sprite.animations.getAnimation('flamestrike').onComplete(() => {
+    this.sprite.animations.getAnimation('flamestrike').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
     });
-    this.sprite.animations.getAnimation('icestrike').onComplete(() => {
+    this.sprite.animations.getAnimation('icestrike').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
     });
-    this.sprite.animations.getAnimation('lightingstrike').onComplete(() => {
+    this.sprite.animations.getAnimation('lightingstrike').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
     });
-    this.sprite.animations.getAnimation('shout').onComplete(() => {
+    this.sprite.animations.getAnimation('shout').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
     });
-    this.sprite.animations.getAnimation('slashblast').onComplete(() => {
+    this.sprite.animations.getAnimation('slashblast').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
     });
   }

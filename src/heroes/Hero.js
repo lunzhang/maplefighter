@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phadser from 'phaser';
 import HeroStates from './HeroStates';
 
 export default class Hero extends Phaser.Group {
@@ -54,6 +54,7 @@ export default class Hero extends Phaser.Group {
   }
 
   update() {
+    console.log(this.sprite);
     switch (this.state) {
       case HeroStates.IDLE_STATE:
       case HeroStates.JUMP_STATE:
