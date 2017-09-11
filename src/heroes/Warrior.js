@@ -34,21 +34,35 @@ export default class Warrior extends Hero {
 
     this.sprite.animations.getAnimation('darkimpale').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
     });
     this.sprite.animations.getAnimation('flamestrike').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
     });
     this.sprite.animations.getAnimation('icestrike').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
     });
     this.sprite.animations.getAnimation('lightingstrike').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
     });
     this.sprite.animations.getAnimation('shout').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
     });
     this.sprite.animations.getAnimation('slashblast').onComplete.add(() => {
       this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
+    });
+    this.sprite.animations.getAnimation('attack1').onComplete.add(() => {
+      this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
+    });
+    this.sprite.animations.getAnimation('attack2').onComplete.add(() => {
+      this.state = HeroStates.IDLE_STATE;
+      this.playAnimation('stand');
     });
   }
 
@@ -91,7 +105,7 @@ export default class Warrior extends Hero {
   }
 
   initSprites() {
-    this.sprite = this.create(0, 0, HeroTypes.WARRIOR + '-sprite');
+    this.sprite = this.create(0, 0, HeroTypes.WARRIOR);
     this.sprite.body.collideWorldBounds = true;
     this.sprite.anchor.set(0.5);
 
@@ -133,9 +147,6 @@ export default class Warrior extends Hero {
       this.normalAttack += 5;
       this.comboAttack.revive();
     }
-    setTimeout(() => {
-      this.state = HeroStates.IDLE_STATE;
-    },800);
   }
 
   activateSlashBlast() {
@@ -159,14 +170,18 @@ export default class Warrior extends Hero {
   }
 
   activateShout() {
-    this.activeCombo.loadTexture(SHOUT);
-    this.activeCombo.revive();
-    this.activeCombo.y = -30;
-    this.activeCombo.x = 0;
+    this.sprite.animations.play('shout');
+  }
 
-    setTimeout(() => {
-      this.state = HeroStates.IDLE_STATE;
-      this.activeCombo.kill();
-    },600);
+  playAnimation(animation) {
+    super.playAnimation(animation);
+    switch(animation) {
+      case 'stand_attack':
+        if(this.sprite.animations.currentAnim.name !== 'attack1') this.sprite.animations.play('attack1');
+        break;
+      case 'jump_attack':
+        if(this.sprite.animations.currentAnim.name !== 'attack2') this.sprite.animations.play('attack2');
+        break;
+    }
   }
 }

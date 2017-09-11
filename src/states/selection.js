@@ -114,7 +114,7 @@ export default class SelectionState extends Phaser.State {
 
   initHeroChoices() {
     Object.keys(HeroTypes).forEach((type, i) => {
-      const heroChoice = this.game.add.image(50 + (i * 105), 450, type);
+      const heroChoice = this.game.add.sprite(50 + (i * 105), 450, type);
       heroChoice.width = 75;
       heroChoice.height = 75;
       this.heroChoices.push(heroChoice);

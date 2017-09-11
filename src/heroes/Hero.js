@@ -36,6 +36,7 @@ export default class Hero extends Phaser.Group {
     this.fall = this.game.add.tween(this);
     this.fall.to({ y: 0 }, 500);
     this.fall.onComplete.add(() => {
+      this.playAnimation('stand');
       this.state = HeroStates.IDLE_STATE;
     });
   }
@@ -54,7 +55,6 @@ export default class Hero extends Phaser.Group {
   }
 
   update() {
-    console.log(this.sprite);
     switch (this.state) {
       case HeroStates.IDLE_STATE:
       case HeroStates.JUMP_STATE:
@@ -104,7 +104,7 @@ export default class Hero extends Phaser.Group {
         else timeDiff = this.actions[keys[j]].timeDown - this.actions[keys[j-1]].timeDown;
         if(timeDiff < 10 || timeDiff > 200) break;
       }
-      if(j === keys.length) return this.activateCombo(combo);
+      if(j === keys.length && this.state === HeroStates.IDLE_STATE) return this.activateCombo(combo);
     }
   }
 
@@ -157,16 +157,12 @@ export default class Hero extends Phaser.Group {
     switch (this.state) {
       case HeroStates.JUMP_STATE:
         this.state = HeroStates.JUMP_ATTACK_STATE;
-        setTimeout(() => {
-          this.state = HeroStates.IDLE_STATE;
-        }, 1000);
+        this.playAnimation('jump_attack');
         this.checkCollision();
         break;
       case HeroStates.IDLE_STATE:
         this.state = HeroStates.ATTACK_STATE;
-        setTimeout(() => {
-          this.state = HeroStates.IDLE_STATE;
-        }, 600);
+        this.playAnimation('stand_attack');
         this.checkCollision();
         break;
     }
@@ -180,6 +176,7 @@ export default class Hero extends Phaser.Group {
       this.fall.updateTweenData('vEnd', { y: this.y });
       this.state = HeroStates.JUMP_STATE;
       this.jump.start();
+      this.playAnimation('jump');
     }
   }
 
@@ -187,9 +184,7 @@ export default class Hero extends Phaser.Group {
     this.checkCombos();
     if (this.state === HeroStates.IDLE_STATE) {
       this.state = HeroStates.DEFEND_STATE;
-      setTimeout(() => {
-        this.state = HeroStates.IDLE_STATE;
-      }, 600);
+
     }
   }
 

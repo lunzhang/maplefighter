@@ -14,15 +14,13 @@ export default class BootState extends Phaser.State {
     this.ready = true;
     this.game.stage.backgroundColor = '#d77826';
 
-    this.game.load.atlas(HeroTypes.WARRIOR + '-sprite', 'resources/imgs/heroes/warrior/warrior.png', 'resources/imgs/heroes/warrior/warrior.json');
-
-    // this.game.load.image(HeroTypes.ARCHER, 'resources/imgs/heroes/archer.png');
-    // this.game.load.image(HeroTypes.CANNONEER, 'resources/imgs/heroes/cannoneer.png');
-    // this.game.load.image(HeroTypes.DUAL_BLADE, 'resources/imgs/heroes/dual_blade.png');
-    // this.game.load.image(HeroTypes.MAGICIAN, 'resources/imgs/heroes/magician.png');
-    // this.game.load.image(HeroTypes.PIRATE, 'resources/imgs/heroes/pirate.png');
-    // this.game.load.image(HeroTypes.THIEF, 'resources/imgs/heroes/thief.png');
-    // this.game.load.image(HeroTypes.WARRIOR, 'resources/imgs/heroes/warrior.png');
+    this.game.load.atlas(HeroTypes.ARCHER, 'resources/imgs/heroes/archer/archer.png', 'resources/imgs/heroes/archer/archer.json');
+    //this.game.load.atlas(HeroTypes.CANNONEER, 'resources/imgs/heroes/cannoneer/cannoneer.png', 'resources/imgs/heroes/cannoneer/cannoneer.json');
+    //this.game.load.atlas(HeroTypes.DUAL_BLADE, 'resources/imgs/heroes/dual_blade/dual_blade.png', 'resources/imgs/heroes/dual_blade/dual_blade.json');
+    this.game.load.atlas(HeroTypes.MAGICIAN, 'resources/imgs/heroes/magician/magician.png', 'resources/imgs/heroes/magician/magician.json');
+    this.game.load.atlas(HeroTypes.PIRATE, 'resources/imgs/heroes/pirate/pirate.png', 'resources/imgs/heroes/pirate/pirate.json');
+    this.game.load.atlas(HeroTypes.THIEF, 'resources/imgs/heroes/thief/thief.png', 'resources/imgs/heroes/thief/thief.json');
+    this.game.load.atlas(HeroTypes.WARRIOR, 'resources/imgs/heroes/warrior/warrior.png', 'resources/imgs/heroes/warrior/warrior.json');
   }
 
   update() {

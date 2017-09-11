@@ -17,22 +17,22 @@ export default class BattleState extends Phaser.State {
   }
 
   createHero(hero, x, y) {
-    switch(hero) {
-      case HeroTypes.ARCHER:
-        return new Archer(this.game, x, y);
-      case HeroTypes.CANNONEER:
-        return new Cannoneer(this.game, x, y);
-      case HeroTypes.DUAL_BLADE:
-        return new DualBlade(this.game, x, y);
-      case HeroTypes.MAGICIAN:
-        return new Magician(this.game, x, y);
-      case HeroTypes.PIRATE:
-        return new Pirate(this.game, x, y);
-      case HeroTypes.THIEF:
-        return new Thief(this.game, x, y);
-      case HeroTypes.WARRIOR:
-        return new Warrior(this.game, x, y);
-    }
+    // switch(hero) {
+    //   case HeroTypes.ARCHER:
+    //     return new Archer(this.game, x, y);
+    //   case HeroTypes.CANNONEER:
+    //     return new Cannoneer(this.game, x, y);
+    //   case HeroTypes.DUAL_BLADE:
+    //     return new DualBlade(this.game, x, y);
+    //   case HeroTypes.MAGICIAN:
+    //     return new Magician(this.game, x, y);
+    //   case HeroTypes.PIRATE:
+    //     return new Pirate(this.game, x, y);
+    //   case HeroTypes.THIEF:
+    //     return new Thief(this.game, x, y);
+    //   case HeroTypes.WARRIOR:
+    //     return new Warrior(this.game, x, y);
+    // }
     return new Warrior(this.game, x, y);
   }
 

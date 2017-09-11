@@ -8,8 +8,8 @@ const WARRIOR = 'WARRIOR';
 
 export default {
   ARCHER,
-  CANNONEER,
-  DUAL_BLADE,
+  //CANNONEER,
+  //DUAL_BLADE,
   MAGICIAN,
   PIRATE,
   THIEF,
