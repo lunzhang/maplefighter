@@ -45,7 +45,7 @@ export default class BattleState extends Phaser.State {
     this.playerOne.actions.right = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
     this.playerOne.actions.attack = this.game.input.keyboard.addKey(Phaser.Keyboard.J);
     this.playerOne.actions.jump = this.game.input.keyboard.addKey(Phaser.Keyboard.K);
-    this.playerOne.actions.defend = this.game.input.keyboard.addKey(Phaser.Keyboard.L);
+    this.playerOne.actions.crouch = this.game.input.keyboard.addKey(Phaser.Keyboard.L);
 
     this.playerOne.actions.up.onUp.add(function() {
       this.checkAnimation();
@@ -65,8 +65,8 @@ export default class BattleState extends Phaser.State {
     this.playerOne.actions.jump.onDown.add(function () {
       this.processJump();
     }, this.playerOne);
-    this.playerOne.actions.defend.onDown.add(function () {
-      this.processDefend();
+    this.playerOne.actions.crouch.onDown.add(function () {
+      this.processCrouch();
     }, this.playerOne);
 
     // player two actions
@@ -76,7 +76,7 @@ export default class BattleState extends Phaser.State {
     this.playerTwo.actions.right = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
     this.playerTwo.actions.attack = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_1);
     this.playerTwo.actions.jump = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_2);
-    this.playerTwo.actions.defend = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_3);
+    this.playerTwo.actions.crouch = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_3);
 
     this.playerTwo.actions.up.onUp.add(function() {
       this.checkAnimation();
@@ -96,8 +96,8 @@ export default class BattleState extends Phaser.State {
     this.playerTwo.actions.jump.onDown.add(function () {
       this.processJump();
     }, this.playerTwo);
-    this.playerTwo.actions.defend.onDown.add(function () {
-      this.processDefend();
+    this.playerTwo.actions.crouch.onDown.add(function () {
+      this.processCrouch();
     }, this.playerTwo);
   }
 

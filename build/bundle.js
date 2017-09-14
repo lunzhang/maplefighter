@@ -35,7 +35,7 @@ const IDLE_STATE = 'IDLE_STATE';
 const JUMP_STATE = 'JUMP_STATE';
 const ATTACK_STATE = 'ATTACK_STATE';
 const JUMP_ATTACK_STATE = 'JUMP_ATTACK_STATE';
-const DEFEND_STATE = 'DEFEND_STATE';
+const CROUCH_STATE = 'CROUCH_STATE';
 const COMBO_STATE = 'COMBO_STATE';
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -43,7 +43,7 @@ const COMBO_STATE = 'COMBO_STATE';
   JUMP_STATE,
   ATTACK_STATE,
   JUMP_ATTACK_STATE,
-  DEFEND_STATE,
+  CROUCH_STATE,
   COMBO_STATE
 });
 
@@ -143,11 +143,11 @@ class Warrior extends __WEBPACK_IMPORTED_MODULE_0__Hero__["a" /* default */] {
     });
     this.combos.push({
       name: LIGHTING_STRIKE,
-      keys: ['down', 'right', 'defend']
+      keys: ['down', 'right', 'crouch']
     });
     this.combos.push({
       name: COMBO_ATTACK,
-      keys: ['down', 'up', 'defend']
+      keys: ['down', 'up', 'crouch']
     });
     this.combos.push({
       name: SHOUT,
@@ -165,8 +165,8 @@ class Warrior extends __WEBPACK_IMPORTED_MODULE_0__Hero__["a" /* default */] {
   initSprites() {
     this.sprite = this.create(0, 0, __WEBPACK_IMPORTED_MODULE_2__HeroTypes__["a" /* default */].WARRIOR);
     this.sprite.body.collideWorldBounds = true;
-    this.sprite.anchor.set(0.5);
-
+    this.sprite.anchor.x= 0.5;
+    this.sprite.anchor.y = 1;
     this.sprite.bringToTop();
   }
 
@@ -304,7 +304,7 @@ class BattleState extends __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.State {
     this.playerOne.actions.right = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.D);
     this.playerOne.actions.attack = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.J);
     this.playerOne.actions.jump = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.K);
-    this.playerOne.actions.defend = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.L);
+    this.playerOne.actions.crouch = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.L);
 
     this.playerOne.actions.up.onUp.add(function() {
       this.checkAnimation();
@@ -324,8 +324,8 @@ class BattleState extends __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.State {
     this.playerOne.actions.jump.onDown.add(function () {
       this.processJump();
     }, this.playerOne);
-    this.playerOne.actions.defend.onDown.add(function () {
-      this.processDefend();
+    this.playerOne.actions.crouch.onDown.add(function () {
+      this.processCrouch();
     }, this.playerOne);
 
     // player two actions
@@ -335,7 +335,7 @@ class BattleState extends __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.State {
     this.playerTwo.actions.right = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.RIGHT);
     this.playerTwo.actions.attack = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.NUMPAD_1);
     this.playerTwo.actions.jump = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.NUMPAD_2);
-    this.playerTwo.actions.defend = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.NUMPAD_3);
+    this.playerTwo.actions.crouch = this.game.input.keyboard.addKey(__WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Keyboard.NUMPAD_3);
 
     this.playerTwo.actions.up.onUp.add(function() {
       this.checkAnimation();
@@ -355,8 +355,8 @@ class BattleState extends __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.State {
     this.playerTwo.actions.jump.onDown.add(function () {
       this.processJump();
     }, this.playerTwo);
-    this.playerTwo.actions.defend.onDown.add(function () {
-      this.processDefend();
+    this.playerTwo.actions.crouch.onDown.add(function () {
+      this.processCrouch();
     }, this.playerTwo);
   }
 
@@ -775,7 +775,7 @@ class Hero extends Phaser.Group {
 
   onHit(damage) {
     if (!this.alive) return;
-    if (this.state !== __WEBPACK_IMPORTED_MODULE_1__HeroStates__["a" /* default */].DEFEND_STATE) this.health = this.health - damage;
+    this.health = this.health - damage;
     if (this.health <= 0) this.kill();
   }
 
@@ -828,11 +828,10 @@ class Hero extends Phaser.Group {
     }
   }
 
-  processDefend() {
+  processCrouch() {
     this.checkCombos();
     if (this.state === __WEBPACK_IMPORTED_MODULE_1__HeroStates__["a" /* default */].IDLE_STATE) {
-      this.state = __WEBPACK_IMPORTED_MODULE_1__HeroStates__["a" /* default */].DEFEND_STATE;
-
+      this.playAnimation('crouch');
     }
   }
 
@@ -842,7 +841,7 @@ class Hero extends Phaser.Group {
           if(this.sprite.animations.currentAnim.name !== 'stand') this.sprite.animations.play('stand');
           break;
         case 'walk':
-          if(this.sprite.animations.currentAnim.name !== 'walk') this.sprite.animations.play('walk');
+          if(this.sprite.animations.currentAnim.name === 'stand') this.sprite.animations.play('walk');
           break;
         case 'jump':
           if(this.sprite.animations.currentAnim.name !== 'jump') this.sprite.animations.play('jump');

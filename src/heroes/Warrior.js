@@ -85,11 +85,11 @@ export default class Warrior extends Hero {
     });
     this.combos.push({
       name: LIGHTING_STRIKE,
-      keys: ['down', 'right', 'defend']
+      keys: ['down', 'right', 'crouch']
     });
     this.combos.push({
       name: COMBO_ATTACK,
-      keys: ['down', 'up', 'defend']
+      keys: ['down', 'up', 'crouch']
     });
     this.combos.push({
       name: SHOUT,
@@ -107,8 +107,8 @@ export default class Warrior extends Hero {
   initSprites() {
     this.sprite = this.create(0, 0, HeroTypes.WARRIOR);
     this.sprite.body.collideWorldBounds = true;
-    this.sprite.anchor.set(0.5);
-
+    this.sprite.anchor.x= 0.5;
+    this.sprite.anchor.y = 1;
     this.sprite.bringToTop();
   }
 

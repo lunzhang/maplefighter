@@ -127,7 +127,7 @@ export default class Hero extends Phaser.Group {
 
   onHit(damage) {
     if (!this.alive) return;
-    if (this.state !== HeroStates.DEFEND_STATE) this.health = this.health - damage;
+    this.health = this.health - damage;
     if (this.health <= 0) this.kill();
   }
 
@@ -180,11 +180,10 @@ export default class Hero extends Phaser.Group {
     }
   }
 
-  processDefend() {
+  processCrouch() {
     this.checkCombos();
     if (this.state === HeroStates.IDLE_STATE) {
-      this.state = HeroStates.DEFEND_STATE;
-
+      this.playAnimation('crouch');
     }
   }
 
@@ -194,7 +193,7 @@ export default class Hero extends Phaser.Group {
           if(this.sprite.animations.currentAnim.name !== 'stand') this.sprite.animations.play('stand');
           break;
         case 'walk':
-          if(this.sprite.animations.currentAnim.name !== 'walk') this.sprite.animations.play('walk');
+          if(this.sprite.animations.currentAnim.name === 'stand') this.sprite.animations.play('walk');
           break;
         case 'jump':
           if(this.sprite.animations.currentAnim.name !== 'jump') this.sprite.animations.play('jump');
